@@ -1,0 +1,13 @@
+# Node.js
+node_modules/
+
+# Electron
+dist/
+*.exe
+*.dmg
+*.tar.gz
+
+# Electron-builder
+.app/
+.build/
+.env

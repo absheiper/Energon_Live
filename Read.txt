@@ -1,0 +1,1 @@
+Для билда и публикации команда npx electron-builder --win --x64 --publish always

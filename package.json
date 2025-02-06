@@ -1,0 +1,49 @@
+{
+  "name": "energon-live",
+  "version": "1.0.3",
+  "description": "A minimal Electron application with node serialport",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/absheiper/Energon_Live.git"
+  },
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "demo"
+  ],
+  "author": "absheiper",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9",
+    "serialport": "^10.3.0",
+    "tableify": "^1.1.1"
+  },
+  "engines": {
+    "node": "18.16.1",
+    "npm": "9.5.1"
+  },
+  "build": {
+  "appId": "com.example.electronser",
+  "productName": "Energon Live",
+  "win": {
+    "target": "nsis"
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "releaseType": "release"
+    }
+  ]
+  }
+}

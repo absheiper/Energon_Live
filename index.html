@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ENERGON</title>
+        <style id="STYLE">
+            
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: inline-block;
+            margin-right: 20px;
+            vertical-align: top;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+            
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #progress-container {
+            width: 100%;
+            background-color: #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #FIRM_progress-bar {
+            width: 0%;
+            height: 30px;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            transition: width 0.05s ease-in-out;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from {
+                filter: brightness(100%);
+            }
+            to {
+                filter: brightness(120%);
+            }
+        }
+        </style>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    </head>
+<body>
+	<h1>LIVE 1.07</h1>
+	<p>ENERGON</p>
+	<div id="BUILDER"></div>
+    <script language="javascript" type="text/javascript" src=".\SRC\ID_SELECTOR\ID_SELECTOR.js"></script>  
+    <script language="javascript" type="text/javascript" src=".\SRC\MCD\MCD2.js"></script>
+    <script language="javascript" type="text/javascript" src=".\SRC\MCD\MCD_HANDLER.js"></script>
+    <script language="javascript" type="text/javascript" src=".\SRC\CONNECTIONS\SERIAL_PORT.js"></script>
+    <script language="javascript" type="text/javascript" src=".\SRC\CAN\ISO_CAN.js"></script>
+    <script language="javascript" type="text/javascript" src=".\SRC\MCD\BOARD_UPDATE.js"></script>
+    <script language="javascript" type="text/javascript" src=".\SRC\VISUAL_TABLE\VISUAL_TABLE.js"></script>
+</body>
+</html>
