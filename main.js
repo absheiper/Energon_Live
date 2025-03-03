@@ -13,53 +13,54 @@ let mainWindow;
 app.whenReady().then(() => {
   checkForUpdates();
 });
+
+autoUpdater.on("update-not-available", () => {
+  dialog.showMessageBox(mainWindow, {
+    type: "info",
+    title: "Обновление",
+    message: "Вы используете актуальную версию приложения!",
+    buttons: ["Окей"],
+  });
+});
+
+autoUpdater.on("update-available", (info) => {
+  dialog
+    .showMessageBox(mainWindow, {
+      type: "info",
+      title: "Обновление найдено",
+      message: `Доступна новая версия: ${info.version}. Хотите скачать?`,
+      buttons: ["Да", "Нет"],
+    })
+    .then((result) => {
+      if (result.response === 0) {
+        autoUpdater.downloadUpdate();
+      }
+    });
+});
+
+autoUpdater.on("update-downloaded", () => {
+  dialog
+    .showMessageBox(mainWindow, {
+      type: "info",
+      title: "Обновление загружено",
+      message: "Обновление скачано. Перезапустить приложение?",
+      buttons: ["Перезапустить", "Позже"],
+    })
+    .then((result) => {
+      if (result.response === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    });
+});
+
+autoUpdater.on("error", (err) => {
+  dialog.showErrorBox("Ошибка обновления", err.message || "Неизвестная ошибка");
+});
+
 // 🔹 Функция проверки обновлений
 function checkForUpdates() {
   autoUpdater.autoDownload = false; // Спрашиваем перед скачиванием
   autoUpdater.checkForUpdates();
-
-  autoUpdater.on("update-not-available", () => {
-    dialog.showMessageBox(mainWindow, {
-      type: "info",
-      title: "Обновление",
-      message: "Вы используете актуальную версию приложения!",
-      buttons: ["Окей"],
-    });
-  });
-
-  autoUpdater.on("update-available", (info) => {
-    dialog
-      .showMessageBox(mainWindow, {
-        type: "info",
-        title: "Обновление найдено",
-        message: `Доступна новая версия: ${info.version}. Хотите скачать?`,
-        buttons: ["Да", "Нет"],
-      })
-      .then((result) => {
-        if (result.response === 0) {
-          autoUpdater.downloadUpdate();
-        }
-      });
-  });
-
-  autoUpdater.on("update-downloaded", () => {
-    dialog
-      .showMessageBox(mainWindow, {
-        type: "info",
-        title: "Обновление загружено",
-        message: "Обновление скачано. Перезапустить приложение?",
-        buttons: ["Перезапустить", "Позже"],
-      })
-      .then((result) => {
-        if (result.response === 0) {
-          autoUpdater.quitAndInstall();
-        }
-      });
-  });
-
-  autoUpdater.on("error", (err) => {
-    dialog.showErrorBox("Ошибка обновления", err.message || "Неизвестная ошибка");
-  });
 }
 
 

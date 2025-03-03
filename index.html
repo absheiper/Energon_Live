@@ -7,7 +7,7 @@
         <style id="STYLE">
             
         body {
-            font-family: Arial, sans-serif;
+            font-family: Consolas, sans-serif;
             margin: 20px;
         }
         .form-group {
@@ -56,6 +56,31 @@
             animation: pulse 1.5s infinite alternate;
         }
         
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh; /* Высота на весь экран */
+        }
+
+        .column {
+            flex: 2; /* Равномерное распределение ширины */
+            border: 3px solid #b6b6b6;
+            padding: 10px;
+            overflow: auto; /* Прокрутка внутри колонки */
+            height: 100%; /* Высота 100% от контейнера */
+        }
+        table {
+            width: 100%; /* Таблица займет всю ширину контейнера */
+            border-collapse: collapse; /* Убираем промежутки между границами */
+        }
+
         @keyframes pulse {
             from {
                 filter: brightness(100%);
@@ -64,19 +89,28 @@
                 filter: brightness(120%);
             }
         }
+        
         </style>
         <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     </head>
 <body>
-	<h1>LIVE 1.07</h1>
+	<h1>LIVE 1.11</h1>
 	<p>ENERGON</p>
 	<div id="BUILDER"></div>
+    <div class="container">
+        <div class="column" id="col1">
+        </div>
+        <div class="column" id="col2">
+        </div>
+        <div class="column" id="col3">
+        </div>
+    </div>
     <script language="javascript" type="text/javascript" src=".\SRC\ID_SELECTOR\ID_SELECTOR.js"></script>  
     <script language="javascript" type="text/javascript" src=".\SRC\MCD\MCD2.js"></script>
     <script language="javascript" type="text/javascript" src=".\SRC\MCD\MCD_HANDLER.js"></script>
     <script language="javascript" type="text/javascript" src=".\SRC\CONNECTIONS\SERIAL_PORT.js"></script>
-    <script language="javascript" type="text/javascript" src=".\SRC\CAN\ISO_CAN.js"></script>
     <script language="javascript" type="text/javascript" src=".\SRC\MCD\BOARD_UPDATE.js"></script>
     <script language="javascript" type="text/javascript" src=".\SRC\VISUAL_TABLE\VISUAL_TABLE.js"></script>
+    <script language="javascript" type="text/javascript" src=".\SRC\DIRECTOR\DIRECTOR.js"></script>
 </body>
 </html>

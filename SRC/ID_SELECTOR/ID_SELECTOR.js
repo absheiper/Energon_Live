@@ -1,7 +1,12 @@
 const BUI = document.getElementById("BUILDER");
+
+const col1 = document.getElementById("col1");
+const col2 = document.getElementById("col2");
+const col3 = document.getElementById("col3");
+
 const STY = document.getElementById("STYLE");
 
-BUI.insertAdjacentHTML( "beforeend", `
+col1.insertAdjacentHTML( "beforeend", `
 <h1>BOARD ID</h1>
 <div>
     <label for="userId">Введите ID:</label>
@@ -14,6 +19,24 @@ BUI.insertAdjacentHTML( "beforeend", `
     return(userInput);
 }
 */
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("h1").forEach(h1 => {
+        h1.style.cursor = "pointer"; // Сделаем курсор указателем
+        h1.addEventListener("click", () => {
+            let nextElement = h1.nextElementSibling;
+            while (nextElement && nextElement.tagName !== "H1") {
+                if (nextElement.style.display === "none") {
+                    nextElement.style.display = "";
+                } else {
+                    nextElement.style.display = "none";
+                }
+                nextElement = nextElement.nextElementSibling;
+            }
+        });
+    });
+});
+
 function parseInput(input) {
     // Удаляем все пробелы из строки
     input = input.replace(/\s+/g, '');

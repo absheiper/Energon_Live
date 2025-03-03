@@ -4,7 +4,7 @@ if (!("serial" in navigator)) {
     throw new Error("Web Serial API не поддерживается.");
 }
 
-BUI.insertAdjacentHTML( "beforeend", `
+col1.insertAdjacentHTML( "beforeend", `
     <h1>COM CONNECTION</h1>
     <div>
 <form id="com-port-form">
@@ -46,6 +46,8 @@ BUI.insertAdjacentHTML( "beforeend", `
         <option value="1.5">1.5</option>
         <option value="2">2</option>
     </select>
+</div>
+<div class="form-group">
 <button id="ComConn">Connect</button>
 </div>
 <hr><hr>

@@ -50,7 +50,73 @@ class VISUAL_TABLE
     }
 }
 
-;
+class VISUAL_TABLE_PROGRESS extends VISUAL_TABLE {
+    constructor(_TABLE, _DATA_PACK) {
+        super(_TABLE, _DATA_PACK);
+    }
+
+    PRINT_TABLE() {
+        this.DELET_ROWS(); // Очистка существующих строк
+        for (let i = 0; i < this.DATA_PACK.VALUES.length; i++) {
+            const row = document.createElement('tr');
+            const nameCell = document.createElement('td');
+            const progressCell = document.createElement('td');
+
+            // Установка названия параметра
+            nameCell.textContent = this.DATA_PACK.VALUES[i].NAME;
+
+            nameCell.style.cssText = `
+                width: 130px;
+            `;
+
+            // Создание контейнера для прогресс-бара
+            const progressContainer = document.createElement('div');
+            progressContainer.style.cssText = `
+                width: 100%;
+                height: 20px;
+                background: #eee;
+                border-radius: 0px;
+                overflow: hidden;
+                position: relative;
+            `;
+
+            // Создание полоски прогресса
+            const progressBar = document.createElement('div');
+            const value = parseFloat(this.DATA_PACK.VALUES[i].GET_IN_TEXT());
+            const VAL_PROG = value * (100 / 5000);
+            
+            progressBar.style.cssText = `
+                width: ${VAL_PROG}%;
+                height: 100%;
+                background: #4CAF50;
+                transition: width 0.3s ease;
+                position: relative;
+            `;
+
+            // Добавление текста с значением
+            const progressText = document.createElement('span');
+            progressText.textContent = `${value}`; // Отображаем значение
+            progressText.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                color: #000;
+                font-size: 12px;
+                font-weight: bold;
+            `;
+
+            // Сборка элементов
+            progressBar.appendChild(progressText); // Добавляем текст внутрь прогресс-бара
+            progressContainer.appendChild(progressBar);
+            progressCell.appendChild(progressContainer);
+            row.appendChild(nameCell);
+            row.appendChild(progressCell);
+            this.TABLE.appendChild(row);
+        }
+    }
+}
 
 // Проверяем поддержку Web Serial API
 if (!("serial" in navigator)) {
@@ -122,7 +188,24 @@ function TABLE_UPDATE (event)
 
 
 MCDH_device.data_base.forEach(el => {
-    BUI.insertAdjacentHTML( "beforeend", `
+    let cloumn_selector = BUI;
+    switch (el.NAME)
+    {
+        case "VOLTAGES":
+            cloumn_selector = col3;
+            break;
+        case "TEMPS":
+            cloumn_selector = col3;
+            break;
+        case("ID_SET"):
+            cloumn_selector = col1;
+            break;
+        default:
+            cloumn_selector = col2;
+            break;
+    }
+
+    cloumn_selector.insertAdjacentHTML( "beforeend", `
         <h1>${el.NAME}</h1>
         <table id="datatable${counter}" border="2">
             <th>Наименование</th>
@@ -133,7 +216,17 @@ MCDH_device.data_base.forEach(el => {
         <button id="but_SAVE${counter}" data-counter="${counter}">SAVE</button>
         <button id="but_LOAD${counter}" data-counter="${counter}">LOAD</button>
     <hr><hr>`);
-    tables.push(new VISUAL_TABLE("datatable"+counter,el));
+    if(el.NAME === "VOLTAGES")
+    {
+        tables.push(new VISUAL_TABLE_PROGRESS("datatable"+counter,el));
+    }
+    else if (el.NAME === "TEMPS")
+    {
+        tables.push(new VISUAL_TABLE_PROGRESS("datatable"+counter,el));
+    }
+    else{
+        tables.push(new VISUAL_TABLE("datatable"+counter,el));
+    }
     el.on('VAL_CHAN', TABLE_UPDATE);
     
     document.getElementById("but_GET"+counter).addEventListener('click', (event) => {
