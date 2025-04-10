@@ -1,6 +1,6 @@
 {
   "name": "energon-live",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "A minimal Electron application with node serialport",
   "main": "main.js",
   "scripts": {
