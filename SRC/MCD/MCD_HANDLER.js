@@ -31,7 +31,7 @@ class ID_SET extends DATA_PACK {
 }
 class BATTERY_INFO extends DATA_PACK {
     constructor(){
-        super("BATTERY_INFO",0x02,0x02)
+        super("BATTERY_INFO",0xCA,0xCA)
         this.VALUES.push(new DATA_BASE("V_MIN", "INT", 2));
         this.VALUES.push(new DATA_BASE("V_MAX", "INT", 2));
         this.VALUES.push(new DATA_BASE("T_MIN", "INT", 2)); 
@@ -43,8 +43,8 @@ class BATTERY_INFO extends DATA_PACK {
         this.VALUES.push(new DATA_BASE("CELL_COUNT", "INT", 2));
         this.VALUES.push(new DATA_BASE("TEMP_COUNT", "INT", 2));
         this.VALUES.push(new DATA_BASE("STATE_CHARGE", "INT", 1));
-        this.VALUES.push(new DATA_BASE("ENABLES_MASK", "INT", 1));
-        this.VALUES.push(new DATA_BASE("STATE", "HEX", 4));
+        this.VALUES.push(new DATA_BASE("ENABLES_MASK", "HEX", 4));
+        this.VALUES.push(new DATA_BASE("STATE", "STATUS1", 4));
         this.VALUES.push(new DATA_BASE("CYCLES_CHARGED", "INT", 4));
         this.VALUES.push(new DATA_BASE("TIME_RELAXING_S", "INT", 4));
         this.VALUES.push(new DATA_BASE("TIME_CHARGE_S", "INT", 4));
@@ -52,15 +52,20 @@ class BATTERY_INFO extends DATA_PACK {
         this.VALUES.push(new DATA_BASE("COUNT_SECOND_WORK_S", "INT", 4));
         this.VALUES.push(new DATA_BASE("COUNT_START_PROGRAMM", "INT", 4));
         this.VALUES.push(new DATA_BASE("BATTERY_CAPACITY_MAH", "INT", 4));
-        this.VALUES.push(new DATA_BASE("POS_CURRENT_COUNTER_GLOBAL", "INT", 8));
-        this.VALUES.push(new DATA_BASE("POS_CURRENT_COUNTER_CYCLE", "INT", 8));
-        this.VALUES.push(new DATA_BASE("NEG_CURRENT_COUNTER_GLOBAL", "INT", 8));
-        this.VALUES.push(new DATA_BASE("NEG_CURRENT_COUNTER_CYCLE", "INT", 8));
+        this.VALUES.push(new DATA_BASE("P_CUR1_GLOBAL", "INT", 8));
+        this.VALUES.push(new DATA_BASE("P_CUR1_CYCLE", "INT", 8));
+        this.VALUES.push(new DATA_BASE("N_CUR1_GLOBAL", "INT", 8));
+        this.VALUES.push(new DATA_BASE("N_CUR1_CYCLE", "INT", 8));
+        this.VALUES.push(new DATA_BASE("P_CUR2_GLOBAL", "INT", 8));
+        this.VALUES.push(new DATA_BASE("P_CUR2_CYCLE", "INT", 8));
+        this.VALUES.push(new DATA_BASE("N_CUR2_GLOBAL", "INT", 8));
+        this.VALUES.push(new DATA_BASE("N_CUR2_CYCLE", "INT", 8));
     }
 }
+
 class ADC_SETTINGS extends DATA_PACK {
     constructor(){
-        super("ADC_SETTINGS",0x30,0x31)
+        super("ADC_SETTINGS",0xC8,0xC9)
         for(let i = 0; i < 3; i++)
         {
             this.VALUES.push(new DATA_BASE("  ", "INT", 0));
@@ -81,10 +86,10 @@ class ADC_SETTINGS extends DATA_PACK {
         }
     }
 }
-class CELL_STATE extends DATA_PACK {
+class BMU_STATE extends DATA_PACK {
     ADD_CELL()
     {
-        this.VALUES.push(new DATA_BASE("STATE", "HEX", 2));
+        this.VALUES.push(new DATA_BASE("STATE", "HEX", 1));
         this.VALUES.push(new DATA_BASE("VOLTAGE", "INT", 2));
         this.VALUES.push(new DATA_BASE("TEMP", "INT", 2));
         this.VALUES.push(new DATA_BASE("TIME_NEED_BALANSING_MS", "INT", 4));
@@ -94,8 +99,15 @@ class CELL_STATE extends DATA_PACK {
         this.VALUES.push(new DATA_BASE("TEMP_MIN_CYCLE", "INT", 2));
     }
     constructor(){
-        super("CELL_STATE",0x40,0x41)
-        this.VALUES.push(new DATA_BASE("CELL_COUNT", "INT", 2))
+        super("BMU_STATE",0xB0,0xB0)
+        this.VALUES.push(new DATA_BASE("V_MIN", "INT", 2));
+        this.VALUES.push(new DATA_BASE("V_MAX", "INT", 2));
+        this.VALUES.push(new DATA_BASE("T_MIN", "INT", 2));
+        this.VALUES.push(new DATA_BASE("T_MAX", "INT", 2));
+        this.VALUES.push(new DATA_BASE("SUMM_VOLTAGE", "INT", 4));
+        this.VALUES.push(new DATA_BASE("CELL_COUNT", "UINT", 2));
+        this.VALUES.push(new DATA_BASE("TEMP_COUNT", "UINT", 2));
+        this.VALUES.push(new DATA_BASE("COMMON_STATE", "HEX", 4));
         for(let i = 0; i < 16; i++)
         {
             this.ADD_CELL();
@@ -105,7 +117,8 @@ class CELL_STATE extends DATA_PACK {
 
 class BAT_MOD_SETTINGS extends DATA_PACK {
     constructor(){
-        super("BAT_MOD_SETTINGS",0x60,0x61)
+        super("BAT_MOD_SETTINGS",0xC0,0xC1)
+        this.VALUES.push(new DATA_BASE("MASK_START", "STATUS2", 4));
         this.VALUES.push(new DATA_BASE("CELL_OVER_EMERGENCY_V", "INT", 2));
         this.VALUES.push(new DATA_BASE("CELL_GIST_FROM_OVER_EMERGENCY_V", "INT", 2));
         this.VALUES.push(new DATA_BASE("TIME_FROM_OVER_EMERGENCY_V_MS", "INT", 4));
@@ -163,9 +176,11 @@ class BAT_MOD_SETTINGS extends DATA_PACK {
 
 class BAT_STR_SETTINGS extends DATA_PACK {
     constructor(){
-        super("BAT_STR_SETTINGS",0x62,0x63)
+        super("BAT_STR_SETTINGS",0xC2,0xC3)
+        this.VALUES.push(new DATA_BASE("MASK_START", "STATUS2", 4));
         this.VALUES.push(new DATA_BASE("MODULE_COUNT", "INT", 1));
         this.VALUES.push(new DATA_BASE("CELL_CAPACITY_MAH", "INT", 4));
+        this.VALUES.push(new DATA_BASE("TIME_GBMS_UNCONNECT_MS", "UINT", 4));
         this.VALUES.push(new DATA_BASE("TIME_FROM_MODULE_COUNT_MS", "INT", 4));
         this.VALUES.push(new DATA_BASE("TIME_TO_MODULE_COUNT_MS", "INT", 4));
         this.VALUES.push(new DATA_BASE("CELL_COUNT", "INT", 2));
@@ -195,20 +210,20 @@ class BAT_STR_SETTINGS extends DATA_PACK {
         this.VALUES.push(new DATA_BASE("TIME_TO_IS_DISCHRGE_MS", "INT", 4));
         this.VALUES.push(new DATA_BASE("TIME_FROM_IS_RELAXING_MS", "INT", 4));
         this.VALUES.push(new DATA_BASE("TIME_TO_IS_RELAXING_MS", "INT", 4));
-        this.VALUES.push(new DATA_BASE("MASK_CHARGE_ENABLE", "HEX", 4));
-        this.VALUES.push(new DATA_BASE("MASK_DISCHARGE_ENABLE", "HEX", 4));
-        this.VALUES.push(new DATA_BASE("MASK_WARNING", "HEX", 4));
-        this.VALUES.push(new DATA_BASE("MASK_RESTRICTION_CHARGE", "HEX", 4));
-        this.VALUES.push(new DATA_BASE("MASK_RESTRICTION_DISCHARGE", "HEX", 4));
-        this.VALUES.push(new DATA_BASE("MASK_COOLING", "HEX", 4));
-        this.VALUES.push(new DATA_BASE("MASK_HEATING", "HEX", 4));
-        this.VALUES.push(new DATA_BASE("MASK_PRECHARGE", "HEX", 4));
+        this.VALUES.push(new DATA_BASE("MASK_CHARGE_ENABLE", "STATUS2", 4));
+        this.VALUES.push(new DATA_BASE("MASK_DISCHARGE_ENABLE", "STATUS2", 4));
+        this.VALUES.push(new DATA_BASE("MASK_WARNING", "STATUS2", 4));
+        this.VALUES.push(new DATA_BASE("MASK_RESTRICTION_CHARGE", "STATUS2", 4));
+        this.VALUES.push(new DATA_BASE("MASK_RESTRICTION_DISCHARGE", "STATUS2", 4));
+        this.VALUES.push(new DATA_BASE("MASK_COOLING", "STATUS2", 4));
+        this.VALUES.push(new DATA_BASE("MASK_HEATING", "STATUS2", 4));
+        this.VALUES.push(new DATA_BASE("MASK_PRECHARGE", "STATUS2", 4));
     }
 }
 
 class BAT_ALL_VOLTAGES extends DATA_PACK {
     constructor(){
-        super("VOLTAGES",0x64,0x64)
+        super("VOLTAGES",0xC4,0xC4)
         for(let i = 0; i < 24; i++){
             for(let j = 0; j < 16; j++){
                 this.VALUES.push(new DATA_BASE("MOD " + (i) + " CELL " + (j+1), "INT", 2));
@@ -218,7 +233,7 @@ class BAT_ALL_VOLTAGES extends DATA_PACK {
 }
 class BAT_ALL_TEMP extends DATA_PACK {
     constructor(){
-        super("TEMPS",0x65,0x65)
+        super("TEMPS",0xC5,0xC5)
         for(let i = 0; i < 24; i++){
             for(let j = 0; j < 16; j++){
                 this.VALUES.push(new DATA_BASE("MOD " + (i) + " CELL " + (j+1), "INT", 2));
@@ -229,7 +244,7 @@ class BAT_ALL_TEMP extends DATA_PACK {
 
 class BAT_CUR_SETTINGS extends DATA_PACK {
     constructor(){
-        super("CUR_SETTINGS",0x66,0x67)
+        super("CUR_SETTINGS",0xC6,0xC7)
         this.VALUES.push(new DATA_BASE("CUR 1", "INT", 0));
         this.VALUES.push(new DATA_BASE("ZERO_VAL_BIT", "INT", 4));
         this.VALUES.push(new DATA_BASE("CUR_COEFF_1000", "INT", 4));
@@ -243,55 +258,52 @@ class BAT_CUR_SETTINGS extends DATA_PACK {
     }
 }
 
-
-
-class DATA_DEVICE
-{
-    data_base = [];
-    constructor()
-    {
-        this.SYS_INFO = new SYS_INFO()
-        this.ID_SET = new ID_SET()
-        this.CELL_STATE = new CELL_STATE()
-        this.BATTERY_INFO = new BATTERY_INFO();
-        //this.BAT_SETTINGS = new BAT_SETTINGS();
-        this.ADC_SETTINGS = new ADC_SETTINGS();  
-        this.BAT_CUR_SETTINGS = new BAT_CUR_SETTINGS();  
-        this.BAT_MOD_SETTINGS = new BAT_MOD_SETTINGS();
-        this.BAT_STR_SETTINGS = new BAT_STR_SETTINGS();
-        this.BAT_ALL_VOLTAGES = new BAT_ALL_VOLTAGES();
-        this.BAT_ALL_TEMP = new BAT_ALL_TEMP();
-
-        this.data_base.push(this.SYS_INFO);
-        this.data_base.push(this.ID_SET);
-        this.data_base.push(this.BATTERY_INFO);
-        this.data_base.push(this.BAT_MOD_SETTINGS);
-        this.data_base.push(this.BAT_STR_SETTINGS);
-        this.data_base.push(this.BAT_ALL_VOLTAGES);
-        this.data_base.push(this.BAT_ALL_TEMP);
-        this.data_base.push(this.ADC_SETTINGS);
-        this.data_base.push(this.BAT_CUR_SETTINGS);
-        //this.data_base.push(this.BAT_SETTINGS);
-        this.data_base.push(this.CELL_STATE);
-        
+class HARD_ID extends DATA_PACK {
+    constructor(){
+        super("HARD_ID",0x15,0x16)
+        this.VALUES.push(new DATA_BASE("HARD_ID", "ASCII", 16));
     }
 }
-MCDH_device = new  DATA_DEVICE();
-MY_MCD.on("DATA_COME", (event) => {
-    console.log("MCD CMD: ", event.detail.COMMAND,"MCD LEN: ", event.detail.PAYLOAD);
-    MCDH_device.data_base.forEach(el => {
-        if(el.SET_VAL == event.detail.COMMAND){
-            el.SET_IN_BYTE(event.detail.PAYLOAD);
+
+class GBMS_BAT_INFO extends DATA_PACK {
+    constructor(){
+        super("BAT_INFO",0xE0,0xE0)
+        this.VALUES.push(new DATA_BASE("STRING_COUNT", "UINT", 1));
+        this.VALUES.push(new DATA_BASE("DELTA_VOLTAGE_mV", "UINT", 4));
+        this.VALUES.push(new DATA_BASE("ENABLES_MASK", "HEX", 4));
+        this.VALUES.push(new DATA_BASE("COMMON_STATE", "STATUS2", 4));
+    }
+}
+
+class GBMS_BAT_SETTINGS extends DATA_PACK{
+    constructor(){
+        super("BAT_SETTINGS",0xE2,0xE3)
+        this.VALUES.push(new DATA_BASE("STRING_COUNT", "UINT", 1));
+        this.VALUES.push(new DATA_BASE("TIME_STRING_UNCONNECT_MS", "UINT", 4));
+        this.VALUES.push(new DATA_BASE("DELTA_STR_MV", "UINT", 4));
+    }
+}
+
+class CBMS_CHANNEL_SETTINGS extends DATA_PACK{
+    constructor(){
+        super("CH_SETTINGS",0xCD,0xCE)
+        for(let i = 0; i < 8; i++)
+        {
+            this.VALUES.push(new DATA_BASE("CH_ASGMNT", "UINT", 1));
+            this.VALUES.push(new DATA_BASE("SETTING", "HEX", 1));
+            this.VALUES.push(new DATA_BASE("TIME_READ_TO_LOW_MS", "UINT", 4));
+            this.VALUES.push(new DATA_BASE("TIME_READ_TO_HI_MS", "UINT", 4));
+            this.VALUES.push(new DATA_BASE("TIME_WRITE_TO_LOW_MS", "UINT", 4));
+            this.VALUES.push(new DATA_BASE("TIME_WRITE_TO_HI_MS", "UINT", 4));
         }
-        /*
-        else{
-            if(el.GET_VAL == event.detail.COMMAND){     // TODO Над этим нужно серьезно подумать
-                el.SET_IN_BYTE(event.detail.PAYLOAD);
-            }
-        }       
-            */ 
-    });
-})
-
-
-
+    }
+}
+class CBMS_CHANNEL_STATE extends DATA_PACK{
+    constructor(){
+        super("CH_STATE",0xCF,0xCF)
+        for(let i = 0; i < 8; i++)
+        {
+            this.VALUES.push(new DATA_BASE("EXT" + (i + 1), "CH_STATE", 1));
+        }
+    }
+}

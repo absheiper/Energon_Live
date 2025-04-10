@@ -25,10 +25,29 @@ col1.insertAdjacentHTML( "beforeend", `
     </div>
     <br>
     <hr><hr>
-        `);
-        
+        `);      
 const TB_FIRM_FILE_NAME = document.getElementById("firm_file_name");
+document.getElementById("progress-container").style.cssText = `
+width: 100%;
+background-color: #ccc;
+border-radius: 10px;
+overflow: hidden;
+`;
 const FIRM_progress_bar = document.getElementById("FIRM_progress-bar");
+FIRM_progress_bar.style.cssText =`
+width: 0%;
+height: 30px;
+background: linear-gradient(90deg, #4caf50, #8bc34a);
+text-align: center;
+line-height: 30px;
+color: white;
+transition: width 0.05s ease-in-out;
+box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+animation: pulse 1.5s infinite alternate;
+`;
+
+
+
 const WRITE_FIRMWARE = 0x20;
 const FIRMWIRE_MESS = 0x25;
 const FIRMWIRE_HELLO = 0x29;                

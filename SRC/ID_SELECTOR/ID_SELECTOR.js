@@ -19,7 +19,49 @@ col1.insertAdjacentHTML( "beforeend", `
     return(userInput);
 }
 */
+document.addEventListener('DOMContentLoaded', function() {
+    const resizers = document.querySelectorAll('.resizer');
+    let isResizing = false;
+    let startX = 0;
+    let startWidth = 0;
+    let currentColumn = null;
 
+    resizers.forEach(resizer => {
+        resizer.addEventListener('mousedown', function(e) {
+            isResizing = true;
+            currentColumn = this.parentElement;
+            startX = e.clientX;
+            startWidth = currentColumn.offsetWidth;
+            
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+        });
+    });
+
+    function handleMouseMove(e) {
+        if (!isResizing) return;
+        
+        const dx = e.clientX - startX;
+        const newWidth = startWidth + dx;
+        
+        if (newWidth >= 50) {
+            currentColumn.style.flex = `0 0 ${newWidth}px`;
+            currentColumn.style.width = `${newWidth}px`;
+            currentColumn.style.minWidth = `${newWidth}px`;
+        }
+    }
+
+    function handleMouseUp() {
+        isResizing = false;
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+    }
+});
+
+
+
+
+/*
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("h1").forEach(h1 => {
         h1.style.cursor = "pointer"; // Сделаем курсор указателем
@@ -36,7 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
-
+*/
+/*
 function parseInput(input) {
     // Удаляем все пробелы из строки
     input = input.replace(/\s+/g, '');
@@ -90,10 +133,58 @@ function ID_GET_MAP() {
     map.TO = parsedInput.finalId;
 
     return map;
-    /*
-    var map = new MAPPING();
-    map.ARRAY_POINTS.push(new POINT(0,2));//2,3 - can
-    map.TO = getId();
-    */
-    return(map);
+
+}
+*/
+
+function parseInput(input) {
+    input = input.replace(/\s+/g, '');
+    
+    // Разрешаем отсутствие пар P...W... (квантификатор * вместо +)
+    const regex = /^(?:P[0-9A-Fa-f]+W\d+)*0x[0-9A-Fa-f]+$/g;
+    
+    // Проверяем всю строку на соответствие формату
+    if (!regex.test(input)) {
+        throw new Error("Invalid input format");
+    }
+
+    const result = {
+        devices: [],
+        cables: [],
+        finalId: null
+    };
+
+    // Отделяем конечный ID даже если нет пар
+    const finalIdMatch = input.match(/0x[0-9A-Fa-f]+$/);
+    const pairsChain = input.replace(/0x[0-9A-Fa-f]+$/, '');
+
+    // Парсим пары (может быть пустой массив)
+    const pairs = pairsChain.match(/P[0-9A-Fa-f]+W\d+/g) || [];
+    
+    for (const pair of pairs) {
+        const [deviceHex, cable] = pair.split(/W/);
+        const device = parseInt(deviceHex.slice(1), 16);
+        
+        result.devices.push(device);
+        result.cables.push(parseInt(cable, 10));
+    }
+
+    if (finalIdMatch) {
+        result.finalId = parseInt(finalIdMatch[0], 16);
+    }
+
+    return result;
+}
+
+function ID_GET_MAP() {
+    const userInput = document.getElementById("userId").value;
+    const parsedInput = parseInput(userInput);
+
+    const map = new MAPPING();
+    for (let i = 0; i < parsedInput.devices.length; i++) {
+        map.ARRAY_POINTS.push(new POINT(parsedInput.devices[i], parsedInput.cables[i]));
+    }
+    map.TO = parsedInput.finalId;
+
+    return map;
 }
